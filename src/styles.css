@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
-/* Design tokens, generated from the installed pinx-ui by scripts/sync-theme.mjs.
-   Gives Tailwind the @theme the package does not ship, so token utilities
-   (bg-surface, py-extra-large, font-display …) are generated for our markup. */
-@import "./theme.css";
+/* Design tokens, straight from the design system (pinx-ui >= 0.1.2). */
+@import "pinx-ui/theme.css";
 
-/* pinx-ui ships compiled CSS rather than source, so point Tailwind at the built
+/* pinx-ui ships compiled JS rather than source, so point Tailwind at the built
    bundle to pick up the class names its components use. */
 @source "../node_modules/pinx-ui/dist";

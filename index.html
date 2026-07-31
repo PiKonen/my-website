@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <!-- pinx-ui/theme.css declares --font-display and --font-body but does not
+         load the webfonts, so the page has to. Weights mirror the design
+         system; 300 is required by the text/display/l style. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@300;400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap"
+    />
     <title>my-website</title>
   </head>
   <body>
