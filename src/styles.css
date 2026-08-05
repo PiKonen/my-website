@@ -1,25 +1,12 @@
 @import "tailwindcss";
 
-/* Design tokens, straight from the design system (pinx-ui >= 0.1.2). */
+/* Design tokens, straight from the design system (pinx-ui >= 0.1.5): colours,
+   fonts, the type scale, spacing, radius and elevation. The type scale used to
+   be redeclared below this line — and its display/l (Light 40) disagreed with
+   the design system's (Bold 60 / -2%, the h1 the desktop design actually uses)
+   — so it now lives only upstream, in pinx-ui/theme.css. */
 @import "pinx-ui/theme.css";
 
 /* pinx-ui ships compiled JS rather than source, so point Tailwind at the built
    bundle to pick up the class names its components use. */
 @source "../node_modules/pinx-ui/dist";
-
-/* Typography scale. pinx-ui's theme only tokenises the two font families, so
-   the Figma text styles live here for now — one utility per style, size,
-   leading, tracking and weight bundled, so pages never hand-write type values.
-   Belongs upstream in pinx-ui/theme.css once it grows type tokens. */
-@theme {
-  /* Figma text/display/l — Roboto Serif Light 40 / AUTO leading / -2% */
-  --text-display-l:                40px;
-  --text-display-l--line-height:   normal;
-  --text-display-l--letter-spacing: -0.02em;
-  --text-display-l--font-weight:   300;
-
-  /* Figma text/body/s — Work Sans Regular 14 / 125% */
-  --text-body-s:                   14px;
-  --text-body-s--line-height:      1.25;
-  --text-body-s--font-weight:      400;
-}
