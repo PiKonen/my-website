@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { ImageCard } from "pinx-ui";
 import "./styles.css";
@@ -27,10 +27,29 @@ import "./styles.css";
 // The column is max-w-5xl (1024px) against the design's 1100px, reusing the
 // design system's own container width (see its Nav) rather than inventing one.
 
-const MENU = [
-  { label: "Work", href: "#" },
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
+// The page's user-facing copy lives in public/assets/content.json, not in this
+// file, so it can be edited and reloaded without a rebuild. The cost of that: it
+// is fetched rather than bundled, so it arrives after first paint and the page
+// has nothing to render until it lands.
+//
+// Keys are the content file's own, dotted and verbatim. Listing them as a union
+// rather than reaching into a Record<string, string> is what makes a typo here a
+// type error instead of an "undefined" on the page.
+const CONTENT_URL = "/assets/content.json";
+
+type ContentKey =
+  | "label.SiteName"
+  | "label.Navi_1"
+  | "label.Navi_2"
+  | "label.Navi_3";
+
+type Content = Record<ContentKey, string>;
+
+// Labels come from the content file; hrefs are routing, so they stay in code.
+const MENU: { key: ContentKey; href: string }[] = [
+  { key: "label.Navi_1", href: "#" },
+  { key: "label.Navi_2", href: "#" },
+  { key: "label.Navi_3", href: "#" },
 ];
 
 // Desktop mosaic placement, in the design's stacking order. Node ids are the
@@ -57,18 +76,53 @@ const TILE_IMAGE = "/assets/portfolio-tile.jpg";
 const TILE_ALT = "A lioness resting on open gravel";
 
 function LandingPage() {
+  const [content, setContent] = useState<Content | null>(null);
+
+  useEffect(() => {
+    // StrictMode runs this twice in dev, so the second response can land first;
+    // the flag drops whichever result belongs to the torn-down effect.
+    let cancelled = false;
+
+    fetch(CONTENT_URL)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`${CONTENT_URL} responded ${response.status}`);
+        }
+        // Unchecked: the file is ours and ships alongside the page, so a missing
+        // key is a build-time mistake to catch in review, not a runtime branch.
+        return response.json() as Promise<Content>;
+      })
+      .then((loaded) => {
+        if (!cancelled) setContent(loaded);
+      })
+      .catch((error: unknown) => {
+        console.error("Could not load site content", error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Nothing on the page is meaningful without its copy, so the whole page waits
+  // rather than painting a header with holes in it. If the fetch fails this stays
+  // blank by design — the error is on the console.
+  if (!content) return null;
+
   return (
     <div className="min-h-screen bg-white font-body text-body">
       <div className="mx-auto flex max-w-5xl flex-col gap-large px-large py-extra-large md:gap-small md:px-extra-large md:py-large">
         <header className="flex flex-col gap-medium md:flex-row md:items-center md:justify-between md:py-extra-large">
           {/* text/display/md on mobile, text/display/l on desktop — the weight
               and tracking of each step ride along with the token. */}
-          <h1 className="font-display text-display-md md:text-display-l">Portfolio</h1>
+          <h1 className="font-display text-display-md md:text-display-l">
+            {content["label.SiteName"]}
+          </h1>
 
           <nav aria-label="Main" className="flex gap-large text-body-md md:gap-medium">
             {MENU.map((item) => (
-              <a key={item.label} href={item.href}>
-                {item.label}
+              <a key={item.key} href={item.href}>
+                {content[item.key]}
               </a>
             ))}
           </nav>
