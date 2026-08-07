@@ -1,6 +1,6 @@
 import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { ImageCard } from "pinx-ui";
+import { ImageCard, Nav } from "pinx-ui";
 import "./styles.css";
 
 // Figma: my-website › Landing page (node 13:21) and mobile-landing-page (22:136).
@@ -16,16 +16,16 @@ import "./styles.css";
 //
 //   design    token          used for
 //   8, 10     small          footer bottom padding, desktop section gaps (10)
-//   12        medium         mobile nav gap (h1 → menu)
 //   16, 20    medium         tile gaps (mobile 16 exact, desktop 20)
-//   21        medium         desktop menu item gaps
-//   24, 27    large          mobile gutters + menu gaps, desktop top inset
+//   24, 27    large          mobile gutters
 //   32        large          mobile section gaps (exact)
-//   40        extra-large    nav vertical padding, mobile page vertical padding
+//   40        extra-large    mobile page vertical padding
 //   70, 90    extra-large    desktop footer top padding, desktop gutters
 //
-// The column is max-w-5xl (1024px) against the design's 1100px, reusing the
-// design system's own container width (see its Nav) rather than inventing one.
+// The header is the design system's Nav, so its spacing is the component's own
+// and is not snapped here. The page column is max-w-5xl (1024px) against the
+// design's 1100px, which is the width Nav lays its own bar out to — the two line
+// up rather than the page inventing a width of its own.
 
 // The page's user-facing copy lives in public/assets/content.json, not in this
 // file, so it can be edited and reloaded without a rebuild. The cost of that: it
@@ -46,6 +46,7 @@ type ContentKey =
 type Content = Record<ContentKey, string>;
 
 // Labels come from the content file; hrefs are routing, so they stay in code.
+// Nav wants { label, href }, so the key is resolved to its copy at render time.
 const MENU: { key: ContentKey; href: string }[] = [
   { key: "label.Navi_1", href: "#" },
   { key: "label.Navi_2", href: "#" },
@@ -111,23 +112,18 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white font-body text-body">
+      {/* Nav renders the whole header — site name and links — as one sticky,
+          full-bleed bar with its own bottom rule, so it sits outside the page
+          column and takes no className. What the design's own header had and
+          this does not: the display-type h1 (Nav sets the site name as a span at
+          text/body/md/em) and the mobile stack, since Nav is one row at every
+          width. */}
+      <Nav
+        siteName={content["label.SiteName"]}
+        links={MENU.map((item) => ({ label: content[item.key], href: item.href }))}
+      />
+
       <div className="mx-auto flex max-w-5xl flex-col gap-large px-large py-extra-large md:gap-small md:px-extra-large md:py-large">
-        <header className="flex flex-col gap-medium md:flex-row md:items-center md:justify-between md:py-extra-large">
-          {/* text/display/md on mobile, text/display/l on desktop — the weight
-              and tracking of each step ride along with the token. */}
-          <h1 className="font-display text-display-md md:text-display-l">
-            {content["label.SiteName"]}
-          </h1>
-
-          <nav aria-label="Main" className="flex gap-large text-body-md md:gap-medium">
-            {MENU.map((item) => (
-              <a key={item.key} href={item.href}>
-                {content[item.key]}
-              </a>
-            ))}
-          </nav>
-        </header>
-
         {/* Mobile: one full-width tile per row, each at the Image Card's own
             540/418 ratio — which is exactly what the mobile frame draws.
             Desktop: the 4 × 4 mosaic. Tiles span two rows or two columns, so the
