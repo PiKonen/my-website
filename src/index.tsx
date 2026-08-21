@@ -112,21 +112,25 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white font-body text-body">
-
       {/* Nav renders the whole header — site name and links — as one sticky,
           full-bleed bar with its own bottom rule, so it sits outside the page
           column and takes no className. What the design's own header had and
           this does not: the display-type h1 (Nav sets the site name as a span at
           text/body/md/em) and the mobile stack, since Nav is one row at every
           width. */}
-     <Nav
+      <Nav
         siteName={content["label.SiteName"]}
         links={MENU.map((item) => ({ label: content[item.key], href: item.href }))}
       />
-      
-<div className="self-start">
-  <Button label="Test me" onClick={() => {}} />
-</div>
+
+      <div className="mx-auto flex max-w-5xl flex-col gap-large px-large py-extra-large md:gap-small md:px-extra-large md:py-large">
+        {/* Primary button at the top of the page. Button takes no className, so
+            the wrapper is what keeps it at its intrinsic width — the flex column
+            would otherwise stretch it edge to edge. Its fill is
+            color/primary/500, which styles.css re-points at the orange ramp. */}
+        <div className="w-fit">
+          <Button label="Test me" onClick={() => {}} />
+        </div>
 
         {/* Mobile: one full-width tile per row, each at the Image Card's own
             540/418 ratio — which is exactly what the mobile frame draws.
