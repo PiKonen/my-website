@@ -124,11 +124,9 @@ function LandingPage() {
         links={MENU.map((item) => ({ label: content[item.key], href: item.href }))}
       />
       
-      <div className="mx-auto flex max-w-5xl flex-col gap-large px-large py-extra-large ...">
-        {/* Primary button at the top of the page */}
-        <button className="w-fit rounded-md bg-[var(--color-primary)] px-6 py-3 ...">
-        Test me
-        </button>
+<div className="self-start">
+  <Button label="Test me" onClick={() => {}} />
+</div>
 
         {/* Mobile: one full-width tile per row, each at the Image Card's own
             540/418 ratio — which is exactly what the mobile frame draws.
