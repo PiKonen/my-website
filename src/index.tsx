@@ -112,20 +112,24 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white font-body text-body">
+
       {/* Nav renders the whole header — site name and links — as one sticky,
           full-bleed bar with its own bottom rule, so it sits outside the page
           column and takes no className. What the design's own header had and
           this does not: the display-type h1 (Nav sets the site name as a span at
           text/body/md/em) and the mobile stack, since Nav is one row at every
           width. */}
-      <Nav
+     <Nav
         siteName={content["label.SiteName"]}
         links={MENU.map((item) => ({ label: content[item.key], href: item.href }))}
       />
-        {/* Primary button at the top of the page */}
-           <Button label="Test me" onClick={() => {}} />
       
-      <div className="mx-auto flex max-w-5xl flex-col gap-large px-large py-extra-large md:gap-small md:px-extra-large md:py-large">
+      <div className="mx-auto flex max-w-5xl flex-col gap-large px-large py-extra-large ...">
+        {/* Primary button at the top of the page */}
+        <button className="w-fit rounded-md bg-[var(--color-primary)] px-6 py-3 ...">
+        Test me
+        </button>
+
         {/* Mobile: one full-width tile per row, each at the Image Card's own
             540/418 ratio — which is exactly what the mobile frame draws.
             Desktop: the 4 × 4 mosaic. Tiles span two rows or two columns, so the
