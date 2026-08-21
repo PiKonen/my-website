@@ -1,6 +1,6 @@
 import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { ImageCard, Nav } from "pinx-ui";
+import { Button, ImageCard, Nav } from "pinx-ui";
 import "./styles.css";
 
 // Figma: my-website › Landing page (node 13:21) and mobile-landing-page (22:136).
