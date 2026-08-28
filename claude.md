@@ -59,9 +59,8 @@ component) visually near each other, check: same size, one shared gap, one
 alignment. If they're not grouped this way, fix it before considering the
 page done.
 
-## Tone of voice
-[Not yet defined for this brand — ask before writing user-facing copy with a
-specific register/personality in mind, rather than assuming one.]
+## Tone of Voice
+Write in a professional, clear, and structured manner. Use precise language, concise explanations, and neutral wording. Prioritize clarity, credibility, and consistency over personality.
 
 ## Before pushing
 - Confirm the pinx-ui version in package.json/package-lock actually matches
