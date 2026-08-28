@@ -283,6 +283,10 @@ export function LoginPage() {
               disabled={pending}
             />
 
+            {/* All three actions of this step are one group, so they share one
+                wrapper, one gap token and one alignment, and all sit at the
+                default `large` size — the design shows no size hierarchy
+                between them, only the primary/secondary distinction. */}
             <div className="flex flex-wrap items-center gap-s">
               <Button
                 label={content["label.Login_Verify"]}
@@ -304,17 +308,12 @@ export function LoginPage() {
                     : content["label.Login_Resend"]
                 }
                 variant="secondary"
-                size="small"
                 onClick={() => void resend()}
                 disabled={pending || cooldown > 0}
               />
-            </div>
-
-            <div className="w-fit">
               <Button
                 label={content["label.Login_Back"]}
                 variant="secondary"
-                size="small"
                 onClick={restart}
                 disabled={pending}
               />

@@ -22,3 +22,11 @@ If one exists:
 If no contract exists for a component yet, use it based on its actual
 TypeScript prop types (import { X } from "pinx-ui" and check the .d.ts) —
 don't guess at props that aren't in the type signature.
+
+## Breakpoints
+- md: (768px) — mobile → desktop layout switch (matches Figma's two frames)
+- xl: (1280px) — matches the desktop Figma frame's actual width exactly
+- sm: and lg: exist (Tailwind defaults) but have no corresponding design yet —
+  don't add responsive behavior at these sizes without a real spec to build to.
+
+

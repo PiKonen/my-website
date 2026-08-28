@@ -38,6 +38,27 @@ a flex column (e.g. a button that shouldn't fill the container), wrap it:
   scale before using any spacing class — token names have been renamed before
   (values, not just names, so don't assume a name-similar match is correct).
 
+## Composition rules
+When multiple buttons (or other interactive components) appear together as a
+group — a form's actions, a CTA row, a toolbar — they must:
+- Share the same `size` prop. Don't mix `large` and `small` within one group
+  unless the design explicitly shows a size hierarchy.
+- Sit inside a single flex/grid wrapper with one consistent gap token
+  (`gap-s`, `gap-m`, etc.) — not individually-margined elements.
+- Have one clear alignment (start / end / centered / space-between) rather
+  than each element positioned independently.
+
+Example pattern for a button group:
+    <div className="flex items-center gap-s">
+      <Button label="Cancel" variant="secondary" onClick={...} />
+      <Button label="Save" onClick={...} />
+    </div>
+
+Before finishing any page with more than one button (or similar repeated
+component) visually near each other, check: same size, one shared gap, one
+alignment. If they're not grouped this way, fix it before considering the
+page done.
+
 ## Tone of voice
 [Not yet defined for this brand — ask before writing user-facing copy with a
 specific register/personality in mind, rather than assuming one.]
