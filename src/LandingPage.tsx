@@ -1,0 +1,128 @@
+import { Button, ImageCard, Nav } from "pinx-ui";
+import { MENU, useContent } from "./content";
+
+// Figma: my-website › Landing page (node 13:21) and mobile-landing-page (22:136).
+// The two frames are the same page at two widths, so this is one component with
+// md: as the seam — below md it follows the 390-wide mobile frame, at md and up
+// the 1280-wide desktop frame.
+//
+// Every type style, colour and radius here is a design system token. The design's
+// SPACING is not on the design system's scale, so each value is snapped to its
+// nearest step, ties rounding up. That is a deliberate trade: the rhythm is
+// tokenised, and drifts from Figma by up to 22px in places.
+//
+//   design    token   px    used for
+//   8         2xs      8    footer bottom padding (exact)
+//   10        2xs      8    desktop section gaps
+//   16, 20    s       16    tile gaps (mobile 16 exact, desktop 20)
+//   24, 27    l       32    mobile gutters
+//   32        l       32    mobile section gaps (exact)
+//   40        xl      48    mobile page vertical padding
+//   70, 90    xl      48    desktop footer top padding, desktop gutters
+//
+// Those token NAMES are pinx-ui 0.5.0's. That release retired the old
+// small/medium/large/extra-large set for Figma's own 4xs 2 · 3xs 4 · 2xs 8 ·
+// xs 12 · s 16 · m 24 · l 32 · xl 48, and until the rename below this page
+// rendered with no gaps or gutters at all — Tailwind emits nothing for a token
+// that does not exist. The rename went by VALUE, not by name, which is the
+// whole difficulty: the new xs is 12px, NOT the 8px the old `small` held (8px
+// is 2xs), so a name-for-name swap would have shifted every 8px inset up to 12.
+// Every px in the table above is what the page rendered under 0.4.3, unchanged.
+//
+// What is now POSSIBLE and is not done here: 0.5.0 added xs 12 and m 24, two
+// steps the old scale had no answer for, so three rows above could snap closer
+// than they do — 24/27 mobile gutters onto m (24) rather than l (32), 10 onto
+// xs (12) on a tie, 20 onto m (24) on a tie. That is a change to how the page
+// looks, not a repair of it, so it wants its own decision.
+//
+// The header is the design system's Nav, so its spacing is the component's own
+// and is not snapped here. The page column is max-w-5xl (1024px) against the
+// design's 1100px, which is the width Nav lays its own bar out to — the two line
+// up rather than the page inventing a width of its own.
+
+// Desktop mosaic placement, in the design's stacking order. Node ids are the
+// Image Card instances in Figma. The placement is md:-only: below md the frame
+// stacks every tile full-width, which is the flex column's default.
+const TILES = [
+  { node: "19:150", place: "md:col-start-1 md:col-span-2 md:row-start-1 md:row-span-2" },
+  { node: "19:56", place: "md:col-start-3 md:row-start-1" },
+  { node: "19:154", place: "md:col-start-4 md:row-start-1 md:row-span-2" },
+  { node: "19:166", place: "md:col-start-3 md:row-start-2" },
+  { node: "19:178", place: "md:col-start-1 md:row-start-3" },
+  { node: "19:162", place: "md:col-start-2 md:col-span-2 md:row-start-3" },
+  { node: "19:158", place: "md:col-start-4 md:row-start-3 md:row-span-2" },
+  { node: "19:174", place: "md:col-start-1 md:row-start-4" },
+  { node: "19:182", place: "md:col-start-2 md:row-start-4" },
+  { node: "19:170", place: "md:col-start-3 md:row-start-4" },
+];
+
+// Placeholder content: every Image Card instance in the design carries the
+// component's default photo, so all ten tiles are the same image and share one
+// alt string. Swap in a per-tile src/alt — and title/description, which surface
+// the card's hover caption — once there is real work to show.
+const TILE_IMAGE = "/assets/portfolio-tile.jpg";
+const TILE_ALT = "A lioness resting on open gravel";
+
+export function LandingPage() {
+  const content = useContent();
+
+  // Nothing on the page is meaningful without its copy, so the whole page waits
+  // rather than painting a header with holes in it. If the fetch fails this stays
+  // blank by design — the error is on the console.
+  if (!content) return null;
+
+  return (
+    <div className="min-h-screen bg-white font-body text-body">
+      {/* Nav renders the whole header — site name and links — as one sticky,
+          full-bleed bar with its own bottom rule, so it sits outside the page
+          column and takes no className. What the design's own header had and
+          this does not: the display-type h1 (Nav sets the site name as a span at
+          text/body/md/em) and the mobile stack, since Nav is one row at every
+          width. */}
+      <Nav
+        siteName={content["label.SiteName"]}
+        links={MENU.map((item) => ({ label: content[item.key], href: item.href }))}
+      />
+
+      <div className="mx-auto flex max-w-5xl flex-col gap-l px-l py-xl md:gap-2xs md:px-xl md:py-l">
+        {/* Primary button at the top of the page. Button takes no className, so
+            the wrapper is what keeps it at its intrinsic width — the flex column
+            would otherwise stretch it edge to edge. Its fill is color/primary/500,
+            resolved here from the core design system's token values — a brand
+            variant (see my-website-clone) can re-point this same token to a
+            different colour without touching this file at all. */}
+        <div className="w-fit">
+          <Button label="Test me" onClick={() => {}} />
+        </div>
+
+        {/* Mobile: one full-width tile per row, each at the Image Card's own
+            540/418 ratio — which is exactly what the mobile frame draws.
+            Desktop: the 4 × 4 mosaic. Tiles span two rows or two columns, so the
+            rows need a definite height to divide; the grid takes the design
+            grid's own proportion (1100 × 856) and min-h-0 stops it growing to
+            content instead (it is a flex item, so its min-height would otherwise
+            be auto). */}
+        <main className="flex flex-col gap-s md:grid md:aspect-[1100/856] md:min-h-0 md:grid-cols-4 md:grid-rows-4">
+          {TILES.map((tile) => (
+            // The wrapper carries the grid placement — ImageCard takes no
+            // className of its own — and size-full on the card makes both axes
+            // definite, which overrides its 540/418 ratio so it fills a cell of
+            // any shape. Height alone is not enough: the ratio would then derive
+            // the width from it and overflow the column. Mobile leaves the ratio
+            // be, since there the stack wants exactly 540/418.
+            <div key={tile.node} className={`${tile.place} md:[&>*]:size-full`}>
+              <ImageCard src={TILE_IMAGE} alt={TILE_ALT} />
+            </div>
+          ))}
+        </main>
+
+        {/* text/body/s on mobile, text/body/md on desktop, both in
+            color/text/disabled. */}
+        <footer className="flex flex-col gap-2xs pt-l pb-2xs text-body-s text-body-disabled md:flex-row md:items-end md:justify-between md:pt-xl md:text-body-md">
+          <p>copyright 2026</p>
+          <p>UX · UI · Visual design · Copy</p>
+        </footer>
+      </div>
+    </div>
+  );
+}

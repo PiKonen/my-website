@@ -2,5 +2,35 @@
     "label.SiteName": "My Portfolio",
     "label.Navi_1": "Work",
     "label.Navi_2": "About",
-    "label.Navi_3": "Contact"
+    "label.Navi_3": "Contact",
+    "label.Navi_Login": "Log in",
+
+    "label.Login_Title": "Log in",
+    "label.Login_Intro": "No password needed. We'll send you a one-time code to confirm it's you.",
+    "label.Login_ChannelLegend": "How should we send your code?",
+    "label.Login_ChannelEmail": "Email",
+    "label.Login_ChannelSms": "Text message",
+    "label.Login_EmailLabel": "Email address",
+    "label.Login_EmailPlaceholder": "you@example.com",
+    "label.Login_PhoneLabel": "Mobile number",
+    "label.Login_PhonePlaceholder": "+358 40 123 4567",
+    "label.Login_Send": "Send code",
+
+    "label.Login_CodeSent": "We sent a 6-digit code to {destination}. It expires in 10 minutes.",
+    "label.Login_CodeLabel": "6-digit code",
+    "label.Login_CodePlaceholder": "123456",
+    "label.Login_Verify": "Verify and log in",
+    "label.Login_Resend": "Send a new code",
+    "label.Login_ResendWait": "Send a new code in {seconds} s",
+    "label.Login_Back": "Use a different method",
+
+    "label.Login_DoneTitle": "You're in",
+    "label.Login_DoneBody": "That code checked out. Nothing is behind the login yet — this page is the whole demo.",
+    "label.Login_Restart": "Start over",
+
+    "error.Login_Email": "Enter an email address, like you@example.com",
+    "error.Login_Phone": "Enter a mobile number with its country code, like +358 40 123 4567",
+    "error.Login_Code": "Enter the 6-digit code from your message",
+    "error.Login_CodeWrong": "That code didn't match. Check it, or send a new one.",
+    "error.Login_SendFailed": "Something went wrong at our end. Try again in a moment."
 }
