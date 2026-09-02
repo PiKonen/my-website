@@ -1,4 +1,4 @@
-import { Button, ImageCard, Nav } from "pinx-ui";
+import { Button, Footer, ImageCard, Nav } from "pinx-ui";
 import { MENU, useContent } from "./content";
 
 // Figma: my-website › Landing page (node 13:21) and mobile-landing-page (22:136).
@@ -116,12 +116,10 @@ export function LandingPage() {
           ))}
         </main>
 
-        {/* text/body/s on mobile, text/body/md on desktop, both in
-            color/text/disabled. */}
-        <footer className="flex flex-col gap-2xs pt-l pb-2xs text-body-s text-body-disabled md:flex-row md:items-end md:justify-between md:pt-xl md:text-body-md">
-          <p>copyright 2026</p>
-          <p>UX · UI · Visual design · Copy</p>
-        </footer>
+        {/* Was eight lines of inline <footer>; the responsive stack it carried
+            now lives in pinx-ui's Footer (>= 0.8.1), which owns no inline
+            padding so the container's px-l / md:px-xl still applies. */}
+        <Footer copyright="copyright 2026" tagline="UX · UI · Visual design · Copy" />
       </div>
     </div>
   );
